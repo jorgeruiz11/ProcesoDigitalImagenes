@@ -216,7 +216,7 @@ class Filtros(object):
     def ventana_img_original(self):
         v_mosaico = tk.Toplevel()
         v_mosaico.geometry("250x100")
-        v_mosaico.title("Tamaño del pixelado")
+        v_mosaico.title("Ruta | Nombre imagen")
 
         # Entrada para texto en eje X
         ruta = tk.Label(v_mosaico, text="Ruta o Nombre:")

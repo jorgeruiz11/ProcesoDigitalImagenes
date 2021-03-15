@@ -45,21 +45,6 @@ class ManejadorImagen(object):
         else:
             return suma
 
-    # Ejercicio 1.
-    def escala_grises_1(self):
-        for x in range(self.ancho):
-            for y in range(self.alto):
-                b,g,r = self.imagen[x,y]
-                # El tono gris
-                gris = round((b + g + r) / 3)
-
-                # pixel(b,g,r) -> pixel(gris,gris,gris)
-                self.imagen.itemset((x,y,0), gris) # blue
-                self.imagen.itemset((x,y,1), gris) # green
-                self.imagen.itemset((x,y,2), gris) # red
-
-        return self.imagen
-
     # Ejercicios 1,2,3,4,5,6,7,8,9
     def escala_grises(self, id):
         for x in range(self.ancho):
@@ -138,42 +123,6 @@ class ManejadorImagen(object):
                 self.imagen.itemset((x,y,0), 0) # blue
                 self.imagen.itemset((x,y,1), 0) # green
                 self.imagen.itemset((x,y,2), r) # red
-
-        return self.imagen
-
-    # Ejercicio 15
-    def alto_contraste(self):
-        for x in range(self.ancho):
-            for y in range(self.alto):
-                b,g,r = map(int, self.imagen[x,y])
-                color_contraste = round((b + g + r) / 3)
-
-                if color_contraste > 127:
-                    color_contraste = 255
-                else:
-                    color_contraste = 0
-
-                self.imagen.itemset((x,y,0), color_contraste) # blue
-                self.imagen.itemset((x,y,1), color_contraste) # green
-                self.imagen.itemset((x,y,2), color_contraste) # red
-
-        return self.imagen
-
-    # Ejercicio 16
-    def inverso(self):
-        for x in range(self.ancho):
-            for y in range(self.alto):
-                b,g,r = map(int, self.imagen[x,y])
-                color_contraste = round((b + g + r) / 3)
-
-                if color_contraste > 127:
-                    color_contraste = 0
-                else:
-                    color_contraste = 255
-
-                self.imagen.itemset((x,y,0), color_contraste) # blue
-                self.imagen.itemset((x,y,1), color_contraste) # green
-                self.imagen.itemset((x,y,2), color_contraste) # red
 
         return self.imagen
 
