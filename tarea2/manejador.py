@@ -8,7 +8,7 @@ np.seterr(over='ignore')
 
 # Método que usaremos para mostrar la imagen resultante de aplicar el filtro
 def muestra_resultado(imagen):
-    cv2.imshow('Practica 1', imagen)
+    cv2.imshow('Practica 2', imagen)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
@@ -20,18 +20,24 @@ def borra_resultado(titulo):
     if path.exists(titulo):
         remove(titulo)
 
-class manejador_img(object):
+class manejador(object):
 
     def __init__(self, ruta_imagen):
         self.imagen1 = cv2.imread(ruta_imagen)
+        wancho, halto, c = self.imagen1.shape
 
-        scale_percent = 20
-        width = int(self.imagen1.shape[1] * scale_percent / 100)
-        height = int(self.imagen1.shape[0] * scale_percent / 100)
-        dim = (width, height)
+        # Si la imagen es mas grande que 800x800, 800x_, _x800 la hacemos pequeña
+        if wancho > 800 or halto > 800:
+            width = int(self.imagen1.shape[1] * 20 / 100)
+            height = int(self.imagen1.shape[0] * 20 / 100)
+            dim = (width, height)
 
-        self.imagen = cv2.resize(self.imagen1, dim)
-        self.ancho, self.alto, c = self.imagen.shape
+            self.imagen = cv2.resize(self.imagen1, dim)
+            self.ancho, self.alto, c = self.imagen.shape
+        else:
+            self.imagen = self.imagen1
+            self.ancho, self.alto, c = self.imagen1.shape
+
 
     # Lo usaremos para verificar que cualquier valor en la entrada de un
     # pixel no esté fuera del rango [0,255]
@@ -113,9 +119,3 @@ class manejador_img(object):
                 self.imagen.itemset((x,y,2), r) # red
 
         return self.imagen
-
-
-# m = manejador_img("1117424.png")
-# res = m.rgb(100,20,20)
-#
-# muestra_resultado(res)
