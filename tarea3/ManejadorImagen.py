@@ -5,22 +5,9 @@ from os import remove
 from os import path
 import os
 import sys
+import random
 
 np.seterr(over='ignore')
-
-# Método que usaremos para mostrar la imagen resultante de aplicar el filtro
-def muestra_resultado(imagen):
-    cv2.imshow('Practica 1', imagen)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-def guarda_resultado(titulo, imagen):
-    cv2.imwrite(titulo, imagen)
-    return titulo
-
-def borra_resultado(titulo):
-    if path.exists(titulo):
-        remove(titulo)
 
 class ManejadorImagen(object):
 
@@ -34,145 +21,52 @@ class ManejadorImagen(object):
 
         # resize image
         self.imagen = cv2.resize(self.imagen1, dim)
-        self.ancho, self.alto, c = self.imagen.shape # shape nos da las dimensiones de la matriz
-
-    # Lo usaremos para verificar que cualquier valor en la entrada de un
-    # pixel no esté fuera del rango [0,255]
-    def verificador(self, componente, valor):
-        suma = componente + valor
-        if suma > 255:
-            return 255
-        elif suma < 0:
-            return 0
-        else:
-            return suma
-
-    # Ejercicios 1,2,3,4,5,6,7,8,9
-    def escala_grises(self, id):
-        for x in range(self.ancho):
-            for y in range(self.alto):
-                b,g,r = self.imagen[x,y]
-
-                if id == 1:
-                    gris = round((r+g+b)/3)
-                elif id == 2:
-                    gris = round((r*0.3 + g*0.59 + b*0.11))
-                elif id == 3:
-                    gris = round((r*0.2126 + g*0.7152 + b*0.0722))
-                elif id == 4:
-                    gris = round(max(r,g,b) + min(r,g,b) / 2)
-                elif id == 5:
-                    gris = round(max(r,g,b))
-                elif id == 6:
-                    gris = round(min(r,g,b))
-                elif id == 7:
-                    gris = r
-                elif id == 8:
-                    gris = g
-                elif id == 9:
-                    gris = b
-
-                self.imagen.itemset((x,y,0), gris) # blue
-                self.imagen.itemset((x,y,1), gris) # green
-                self.imagen.itemset((x,y,2), gris) # red
-
-        return self.imagen
-
-    # Ejercicio 10
-    def brillo(self, b1,g1,r1):
-        for x in range(self.ancho):
-            for y in range(self.alto):
-                b,g,r = self.imagen[x,y]
-
-                self.imagen.itemset((x,y,0), self.verificador(b,b1)) # blue
-                self.imagen.itemset((x,y,1), self.verificador(g,g1)) # green
-                self.imagen.itemset((x,y,2), self.verificador(r,r1)) # red
-
-        return self.imagen
-
-
-    # Ejercicio 12
-    def azul(self):
-        for x in range(self.ancho):
-            for y in range(self.alto):
-                b,g,r = self.imagen[x,y]
-
-                self.imagen.itemset((x,y,0), b) # blue
-                self.imagen.itemset((x,y,1), 0) # green
-                self.imagen.itemset((x,y,2), 0) # red
-
-        return self.imagen
-
-    # Ejercicio 13
-    def verde(self):
-        for x in range(self.ancho):
-            for y in range(self.alto):
-                b,g,r = self.imagen[x,y]
-
-                self.imagen.itemset((x,y,0), 0) # blue
-                self.imagen.itemset((x,y,1), g) # green
-                self.imagen.itemset((x,y,2), 0) # red
-
-        return self.imagen
-
-
-    # Ejercicio 14
-    def rojo(self):
-        for x in range(self.ancho):
-            for y in range(self.alto):
-                b,g,r = self.imagen[x,y]
-
-                self.imagen.itemset((x,y,0), 0) # blue
-                self.imagen.itemset((x,y,1), 0) # green
-                self.imagen.itemset((x,y,2), r) # red
-
-        return self.imagen
+        self.ancho, self.alto, c = self.imagen.shape
 
 
     def cuadricula(self, size):
         x, y = size[0], size[1]
         l_coordenadas = []
+        
         yIzq = 0
         yDer = y
-
         while yDer < self.alto:
             xIzq = 0
             xDer = x
             while xDer < self.ancho:
-                l_coordenadas.append((xIzq,yIzq,xDer,yDer))
+                l_coordenadas.append((xIzq, yIzq, xDer, yDer))
+
                 xIzq = xDer
-                xDer += x
-
+                xDer = xDer + x
+            
             xDer = self.ancho - 1
-            l_coordenadas.append((xIzq,yIzq,xDer,yDer))
-            yIzq = yDer
-            yDer += y
+            l_coordenadas.append((xIzq, yIzq, xDer, yDer))
 
+            yIzq = yDer
+            yDer = yDer + y
+        
         yDer = self.alto - 1
+
         xIzq = 0
         xDer = x
-
         while xDer < self.ancho:
-            l_coordenadas.append((xIzq,yIzq,xDer,yDer))
+            l_coordenadas.append((xIzq, yIzq, xDer, yDer))
+
             xIzq = xDer
-            xDer += x
+            xDer = xDer + x
 
         xDer = self.ancho - 1
-        l_coordenadas.append((xIzq,yIzq,xDer,yDer))
+        l_coordenadas.append((xIzq, yIzq, xDer, yDer))
 
         return l_coordenadas
 
 
-    # Para el de color, probablemente no sea necesario calcular promedios. Es decir, no es necesario usar b_prom, etc
-    # Cuando la cuadricula es pequeña ([1,1] hasta [10,10]) se ve mejor usando b,g,r.
-    # Cuando la cuadricula es grande ([20,20] por ejemplo) se ve mejor usando b_prom,g_prom,r_prom.
-    def mosaico_color(self, l_coordenadas, tam):
-        # bgrImg = self.imagen
+    def mosaico_color(self, l_coordenadas, tam, titulo, font_size):
         rgbImg = cv2.cvtColor(self.imagen, cv2.COLOR_BGR2RGB)
 
-        html_img = open('prueba.html', 'w')
-        html_img.write('<FONT SIZE=1>')
-        # html_img.write('<FONT SIZE=1> <PRE>')
+        # html_img = open('prueba.html', 'w')
+        html_img = open(titulo, 'w')
+        html_img.write('<FONT SIZE=font_size> <PRE>')
 
         c_letras = ''
 
@@ -192,28 +86,22 @@ class ManejadorImagen(object):
             g_prom = g_prom // total
             b_prom = b_prom // total
 
-            if tam[0] < 7 and tam[1] < 7:
-                color = '#%02x%02x%02x' % (b, g, r)
-            else:
-                color = '#%02x%02x%02x' % (r_prom, g_prom, b_prom)
+            color = '#%02x%02x%02x' % (r_prom, g_prom, b_prom) if (tam[0] > 7 or tam[1] > 7) else '#%02x%02x%02x' % (r, g, b)
 
             c_letras += f'<font color={color}>M'
 
             if xIzq == 0:
                 c_letras += '<br>'
 
-        html_img.write(c_letras)
-        # html_img.write(c_letras + '</PRE>')
+        html_img.write(c_letras + '<PRE>')
         html_img.close()
 
-        return rgbImg
 
-
-    def mosaico_gris(self, l_coordenadas):
+    def mosaico_gris(self, l_coordenadas, titulo, font_size):
         bgrImg = self.imagen
 
-        html_img = open('prueba.html', 'w')
-        html_img.write('<FONT SIZE=1>')
+        html_img = open(titulo, 'w')
+        html_img.write('<FONT SIZE=font_size> <PRE>')
 
         c_letras = ''
 
@@ -240,17 +128,15 @@ class ManejadorImagen(object):
             if xIzq == 0:
                 c_letras += '<br>'
 
-        html_img.write(c_letras)
+        html_img.write(c_letras + '<PRE>')
         html_img.close()
 
-        return bgrImg
 
-
-    def mosaico_simbolosBW(self, l_coordenadas):
+    def mosaico_simbolosBW(self, l_coordenadas, titulo, font_size):
         bgrImg = self.imagen
 
-        html_img = open('prueba.html', 'w')
-        html_img.write('<FONT SIZE=1> <PRE>')
+        html_img = open(titulo, 'w')
+        html_img.write('<FONT SIZE=font_size> <PRE>')
 
         c_letras = ''
 
@@ -281,14 +167,12 @@ class ManejadorImagen(object):
         html_img.write(c_letras + '</PRE>')
         html_img.close()
 
-        return bgrImg
 
-
-    def mosaico_simbolosC(self, l_coordenadas, tam):
+    def mosaico_simbolosC(self, l_coordenadas, tam, titulo, font_size):
         rgbImg = cv2.cvtColor(self.imagen, cv2.COLOR_BGR2RGB)
 
-        html_img = open('prueba.html', 'w')
-        html_img.write('<FONT SIZE=1>')
+        html_img = open(titulo, 'w')
+        html_img.write('<FONT SIZE=font_size> <PRE>')
 
         c_letras = ''
 
@@ -308,10 +192,7 @@ class ManejadorImagen(object):
             g_prom = g_prom // total
             b_prom = b_prom // total
 
-            if tam[0] < 7 and tam[1] < 7:
-                color = '#%02x%02x%02x' % (r, g, b)
-            else:
-                color = '#%02x%02x%02x' % (r_prom, g_prom, b_prom)
+            color = '#%02x%02x%02x' % (r_prom, g_prom, b_prom) if (tam[0] > 7 or tam[1] > 7) else '#%02x%02x%02x' % (r, g, b)
 
             gris = (b + g + r) // 3
             simbolo = self.define_simbolo(gris)
@@ -320,17 +201,15 @@ class ManejadorImagen(object):
             if xIzq == 0:
                 c_letras += '<br>'
 
-        html_img.write(c_letras)
+        html_img.write(c_letras + '<PRE>')
         html_img.close()
 
-        return rgbImg
 
-
-    def mosaico_simbolos_BW_tonos(self, l_coordenadas):
+    def mosaico_simbolos_BW_tonos(self, l_coordenadas, titulo, font_size):
         bgrImg = self.imagen
 
-        html_img = open('prueba.html', 'w')
-        html_img.write('<FONT SIZE=1>')
+        html_img = open(titulo, 'w')
+        html_img.write('<FONT SIZE=font_size> <PRE>')
 
         c_letras = ''
 
@@ -359,10 +238,8 @@ class ManejadorImagen(object):
             if xIzq == 0:
                 c_letras += '<br>'
 
-        html_img.write(c_letras)
+        html_img.write(c_letras + '<PRE>')
         html_img.close()
-
-        return bgrImg
 
 
     def define_simbolo(self, num):
@@ -403,11 +280,236 @@ class ManejadorImagen(object):
         return letra
 
 
+
+    def mosaico_texto(self, l_coordenadas, tam, titulo, font_size, texto):
+        rgbImg = cv2.cvtColor(self.imagen, cv2.COLOR_BGR2RGB)
+
+        html_img = open(titulo, 'w')
+        html_img.write('<FONT SIZE=font_size> <PRE>')
+
+        c_letras = ''
+        i = 0
+
+        for (xIzq,yIzq,xDer,yDer) in l_coordenadas:
+            b_prom, g_prom, r_prom = 0,0,0
+            total = 1
+
+            for x in range(xIzq,xDer):
+                for y in range(yIzq,yDer):
+                    r,g,b = rgbImg[x,y]
+                    r_prom += r
+                    g_prom += g
+                    b_prom += b
+                    total += 1
+
+            r_prom = r_prom // total
+            g_prom = g_prom // total
+            b_prom = b_prom // total
+
+            color = '#%02x%02x%02x' % (r_prom, g_prom, b_prom) if (tam[0] > 7 or tam[1] > 7) else '#%02x%02x%02x' % (r, g, b)
+
+            if i < len(texto):
+                c_letras += f'<font color={color}>{texto[i]}'
+                i += 1
+            else:
+                i = 0
+                c_letras += f'<font color={color}>{texto[i]}'
+
+
+            if xIzq == 0:
+                c_letras += '<br>'
+
+        html_img.write(c_letras + '<PRE>')
+        html_img.close()
+
+
+    def domino_blanco(self, l_coordenadas, titulo):
+        rgbImg = cv2.cvtColor(self.imagen, cv2.COLOR_BGR2RGB)
+
+        txt_img = open(titulo, 'w')
+
+        c_letras = ''
+        ficha = ''
+        primer_lado_ficha = False # False => 0
+
+        for (xIzq,yIzq,xDer,yDer) in l_coordenadas:
+            b_prom, g_prom, r_prom = 0,0,0
+            total = 1
+
+            for x in range(xIzq,xDer):
+                for y in range(yIzq,yDer):
+                    r,g,b = rgbImg[x,y]
+                    r_prom += r
+                    g_prom += g
+                    b_prom += b
+                    total += 1
+
+            r_prom = r_prom // total
+            g_prom = g_prom // total
+            b_prom = b_prom // total
+
+            gris = (b_prom + g_prom + r_prom) // 3
+
+            if gris in range(0,26):
+                ficha = '9('[primer_lado_ficha] # Si es False => '9('[0], True => '9('[1]
+            elif gris in range(26,52):
+                ficha = '8i'[primer_lado_ficha]
+            elif gris in range(52,78):
+                ficha = '7&'[primer_lado_ficha]
+            elif gris in range(78,104):
+                ficha = '6^'[primer_lado_ficha]
+            elif gris in range(104,130):
+                ficha = '5%'[primer_lado_ficha]
+            elif gris in range(130,156):
+                ficha = '4$'[primer_lado_ficha]
+            elif gris in range(156,182):
+                ficha = '3#'[primer_lado_ficha]
+            elif gris in range(182,208):
+                ficha = '2@'[primer_lado_ficha]
+            elif gris in range(208,234):
+                ficha = '1!'[primer_lado_ficha]
+            elif gris in range(234,255):
+                ficha = '0)'[primer_lado_ficha]
+
+            primer_lado_ficha = not primer_lado_ficha
+            c_letras += ficha
+
+            if xIzq == 0:
+                c_letras += '\n'
+
+        txt_img.write(c_letras)
+        txt_img.close()
+
+
+    def domino_negro(self, l_coordenadas, titulo):
+        rgbImg = cv2.cvtColor(self.imagen, cv2.COLOR_BGR2RGB)
+
+        txt_img = open(titulo, 'w')
+
+        c_letras = ''
+        ficha = ''
+        primer_lado_ficha = False
+
+        for (xIzq,yIzq,xDer,yDer) in l_coordenadas:
+            b_prom, g_prom, r_prom = 0,0,0
+            total = 1
+
+            for x in range(xIzq,xDer):
+                for y in range(yIzq,yDer):
+                    r,g,b = rgbImg[x,y]
+                    r_prom += r
+                    g_prom += g
+                    b_prom += b
+                    total += 1
+
+            r_prom = r_prom // total
+            g_prom = g_prom // total
+            b_prom = b_prom // total
+
+            gris = (b_prom + g_prom + r_prom) // 3
+
+            if gris in range(0,26):
+                ficha = '0)'[primer_lado_ficha]
+            elif gris in range(26,52):
+                ficha = '1!'[primer_lado_ficha]
+            elif gris in range(52,78):
+                ficha = '2@'[primer_lado_ficha]
+            elif gris in range(78,104):
+                ficha = '3#'[primer_lado_ficha]
+            elif gris in range(104,130):
+                ficha = '4$'[primer_lado_ficha]
+            elif gris in range(130,156):
+                ficha = '5%'[primer_lado_ficha]
+            elif gris in range(156,182):
+                ficha = '6^'[primer_lado_ficha]
+            elif gris in range(182,208):
+                ficha = '7&'[primer_lado_ficha]
+            elif gris in range(208,234):
+                ficha = '8i'[primer_lado_ficha]
+            elif gris in range(234,255):
+                ficha = '9('[primer_lado_ficha]
+
+            primer_lado_ficha = not primer_lado_ficha
+            c_letras += ficha
+
+
+            if xIzq == 0:
+                c_letras += '\n'
+
+        txt_img.write(c_letras)
+        txt_img.close()
+
+
+    def cartas(self, l_coordenadas, titulo):
+        rgbImg = cv2.cvtColor(self.imagen, cv2.COLOR_BGR2RGB)
+
+        txt_img = open(titulo, 'w')
+
+        c_letras = ''
+        carta = ''
+
+        for (xIzq,yIzq,xDer,yDer) in l_coordenadas:
+            b_prom, g_prom, r_prom = 0,0,0
+            total = 1
+
+            for x in range(xIzq,xDer):
+                for y in range(yIzq,yDer):
+                    r,g,b = rgbImg[x,y]
+                    r_prom += r
+                    g_prom += g
+                    b_prom += b
+                    total += 1
+
+            r_prom = r_prom // total
+            g_prom = g_prom // total
+            b_prom = b_prom // total
+
+            gris = (b_prom + g_prom + r_prom) // 3
+
+            if gris in range(0,24):
+                carta = random.choice('klm')
+            elif gris in range(24,48):
+                carta = 'j'
+            elif gris in range(48,72):
+                carta = 'i'
+            elif gris in range(72,96):
+                carta = 'h'
+            elif gris in range(96,120):
+                carta = 'g'
+            elif gris in range(120,144):
+                carta = 'f'
+            elif gris in range(144,168):
+                carta = 'e'
+            elif gris in range(168,192):
+                carta = 'd'
+            elif gris in range(192,216):
+                carta = 'c'
+            elif gris in range(216,240):
+                carta = 'b'
+            elif gris in range(240,255):
+                carta = 'a'
+
+            c_letras += carta
+
+            if xIzq == 0:
+                c_letras += '\n'
+
+        txt_img.write(c_letras)
+        txt_img.close()
+
+
+
 if __name__ == '__main__':
-    m = ManejadorImagen('2.jpeg')
+    m = ManejadorImagen('back.jpeg')
+    titulo = "pr1.html"
     tam = [1,1]
     imgP = m.cuadricula(tam)
-    # img = m.mosaico_color(imgP, tam)
-    # img = m.mosaico_gris(imgP)
-    img = m.mosaico_simbolosBW(imgP)
-    # img = m.mosaico_simbolosC(imgP, tam)
+    # img = m.mosaico_color(imgP, tam, titulo)
+    # img = m.mosaico_gris(imgP, titulo)
+    # img = m.mosaico_simbolosBW(imgP, titulo)
+    # img = m.mosaico_simbolosC(imgP, tam, titulo)
+    # img = m.mosaico_simbolos_BW_tonos(imgP, titulo)
+    # img = m.mosaico_texto(imgP, tam, titulo, "HOLA ")
+    img = m.cartas(imgP, titulo)
+    # img = m.domino_blanco(imgP, titulo)
+    # img = m.domino_negro(imgP, titulo)

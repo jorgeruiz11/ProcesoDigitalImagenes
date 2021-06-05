@@ -11,102 +11,80 @@ class Filtros(object):
     def __init__(self):
         self.ventana = tk.Tk()
         self.ventana.title("Aplicador de Filtros")
-        self.ventana.geometry("1000x550")
+        self.ventana.geometry("600x550")
         self.ventana.configure(bg='white')
 
-        self.ListaFiltros = ["Escala de Grises", "Brillo", "Mosaico"]
-
-        self.grises = [
-        "Gris 1", "Gris 2", "Gris 3", "Gris 4", "Gris 5",
-        "Gris 6", "Gris 7", "Gris 8", "Gris 9"]
+        self.filtros = [
+        "M en Colores", "M en Tonos de Gris", "Letras que Simulan tonos de Gris",
+        "Letras en Colores", "Letras en Tonos de Gris", "Texto en colores",
+        "Dominós Blancos", "Dominós Negros", "Naipes"]
 
         # Ejecución principal de los menús
         menu_p = self.barra_menu_principal()
         filtros = self.menu_filtros_desplegable(menu_p)
-        self.menu_desplegable_grises(filtros)
 
 
     """ Seccion de Filtros """
 
-    # Filtro escala de grises tipo 1
-    def tipo_gris1(self):
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).escala_grises(1)
-        self.escala_gris(img_filtrada)
+    
+    def fmosaico_color(self, size, titulo, font_size):
+        l_coords = ManejadorImagen(self.intro_ruta.get()).cuadricula((size[0],size[1]))
+        ManejadorImagen(self.intro_ruta.get()).mosaico_color(l_coords, size, titulo, font_size)
+        messagebox.showwarning('Terminado', 'Archivo guardado como: ' + titulo + '\n\n' + 'Si el archivo ya existía se sobreescribió.')
 
-    # Filtro escala de grises tipo 2
-    def tipo_gris2(self):
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).escala_grises(2)
-        self.escala_gris(img_filtrada)
+    
+    def fmosaico_gris(self, size, titulo, font_size):
+        l_coords = ManejadorImagen(self.intro_ruta.get()).cuadricula((size[0],size[1]))
+        ManejadorImagen(self.intro_ruta.get()).mosaico_gris(l_coords, titulo, font_size)
+        messagebox.showwarning('Terminado', 'Archivo guardado como: ' + titulo + '\n\n' + 'Si el archivo ya existía se sobreescribió.')
 
-    # Filtro escala de grises tipo 3
-    def tipo_gris3(self):
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).escala_grises(3)
-        self.escala_gris(img_filtrada)
+    
+    def fmosaico_simbolosBW(self, size, titulo, font_size):
+        l_coords = ManejadorImagen(self.intro_ruta.get()).cuadricula((size[0],size[1]))
+        ManejadorImagen(self.intro_ruta.get()).mosaico_simbolosBW(l_coords, titulo, font_size)
+        messagebox.showwarning('Terminado', 'Archivo guardado como: ' + titulo + '\n\n' + 'Si el archivo ya existía se sobreescribió.')
 
-    # Filtro escala de grises tipo 4
-    def tipo_gris4(self):
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).escala_grises(4)
-        self.escala_gris(img_filtrada)
+    
+    def fmosaico_simbolosC(self, size, titulo, font_size):
+        l_coords = ManejadorImagen(self.intro_ruta.get()).cuadricula((size[0],size[1]))
+        ManejadorImagen(self.intro_ruta.get()).mosaico_simbolosC(l_coords, size, titulo, font_size)
+        messagebox.showwarning('Terminado', 'Archivo guardado como: ' + titulo + '\n\n' + 'Si el archivo ya existía se sobreescribió.')
 
-    # Filtro escala de grises tipo 5
-    def tipo_gris5(self):
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).escala_grises(5)
-        self.escala_gris(img_filtrada)
+    
+    def fmosaico_texto(self, size, titulo, font_size, texto):
+        l_coords = ManejadorImagen(self.intro_ruta.get()).cuadricula((size[0],size[1]))
+        ManejadorImagen(self.intro_ruta.get()).mosaico_texto(l_coords, size, titulo, font_size, texto)
+        messagebox.showwarning('Terminado', 'Archivo guardado como: ' + titulo + '\n\n' + 'Si el archivo ya existía se sobreescribió.')
 
-    # Filtro escala de grises tipo 6
-    def tipo_gris6(self):
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).escala_grises(6)
-        self.escala_gris(img_filtrada)
+    
+    def fmosaico_simbolos_BW_tonos(self, size, titulo, font_size):
+        l_coords = ManejadorImagen(self.intro_ruta.get()).cuadricula((size[0],size[1]))
+        ManejadorImagen(self.intro_ruta.get()).mosaico_simbolos_BW_tonos(l_coords, titulo, font_size)
+        messagebox.showwarning('Terminado', 'Archivo guardado como: ' + titulo + '\n\n' + 'Si el archivo ya existía se sobreescribió.')
 
-    # Filtro escala de grises tipo 7
-    def tipo_gris7(self):
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).escala_grises(7)
-        self.escala_gris(img_filtrada)
+    
+    def fcartas(self, size, titulo):
+        l_coords = ManejadorImagen(self.intro_ruta.get()).cuadricula((size[0],size[1]))
+        ManejadorImagen(self.intro_ruta.get()).cartas(l_coords, titulo)
+        messagebox.showwarning('Terminado', 'Archivo guardado como: ' + titulo + '\n\n' + 'Si el archivo ya existía se sobreescribió.')
 
-    # Filtro escala de grises tipo 8
-    def tipo_gris8(self):
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).escala_grises(8)
-        self.escala_gris(img_filtrada)
+    
+    def fdomino_blanco(self, size, titulo):
+        l_coords = ManejadorImagen(self.intro_ruta.get()).cuadricula((size[0],size[1]))
+        ManejadorImagen(self.intro_ruta.get()).domino_blanco(l_coords, titulo)
+        messagebox.showwarning('Terminado', 'Archivo guardado como: ' + titulo + '\n\n' + 'Si el archivo ya existía se sobreescribió.')
 
-    # Filtro escala de grises tipo 9
-    def tipo_gris9(self):
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).escala_grises(9)
-        self.escala_gris(img_filtrada)
+    
+    def fdomino_negro(self, size, titulo):
+        l_coords = ManejadorImagen(self.intro_ruta.get()).cuadricula((size[0],size[1]))
+        ManejadorImagen(self.intro_ruta.get()).domino_negro(l_coords, titulo)
+        messagebox.showwarning('Terminado', 'Archivo guardado como: ' + titulo + '\n\n' + 'Si el archivo ya existía se sobreescribió.')
 
-    # Llama al método encargado de cargar la imagen en pantalla
-    def escala_gris(self, img_filtrada):
-        self.carga_imagen_filtrada(img_filtrada)
-
-     # Aplica el filtro de brillo a la imagen y manda a llamar al método
-     # encargado de mostrarlo en pantalla
-    def fbrillo(self, b1,g1,r1):
-        # img_filtrada = ManejadorImagen(self.intro_ruta.get()).brillo((20,20,20))
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).brillo(b1,g1,r1)
-        self.carga_imagen_filtrada(img_filtrada)
-
-     # Aplica el filtro de mosaico a la imagen y manda a llamar al método
-     # encargado de mostrarlo en pantalla
-    def fmosaico(self, size):
-        # reg = ManejadorImagen(self.intro_ruta.get()).calcula_regiones((20,20))
-        reg = ManejadorImagen(self.intro_ruta.get()).calcula_regiones((size[0],size[1]))
-        img_filtrada = ManejadorImagen(self.intro_ruta.get()).mosaico(reg)
-        self.carga_imagen_filtrada(img_filtrada)
-
-
-    def carga_imagen_filtrada(self, img_filtrada):
-        ruta_img = guarda_resultado("filtrada.jpeg", img_filtrada)
-        img = Image.open(ruta_img)
-        borra_resultado(ruta_img)
-        img_rsize = img.resize((400,400))
-        imagen = ImageTk.PhotoImage(img_rsize)
-        imagen.image = imagen
-
-        panel = tk.Label(self.ventana, image = imagen).place(x=525,y=75)
 
 
     def carga_imagen_original(self, ruta_img):
         if not os.path.exists(ruta_img):
-            messagebox.showwarning('Error', 'El archivo no existe o no es la ruta correcta.')
+            messagebox.showwarning('Error', 'El archivo no existe o la ruta es incorrecta.')
 
         img_original = img = Image.open(ruta_img)
         img_rsize = img.resize((400,400))
@@ -121,114 +99,393 @@ class Filtros(object):
     # Y Nos permita crear los menús desplegables
     def barra_menu_principal(self):
         barra_menu_p = tk.Menu(self.ventana)
-        # barra_menu_p.add_command(label='Cargar Imagen', command=self.carga_imagen_original)
         barra_menu_p.add_command(label='Cargar Imagen', command=self.ventana_img_original)
         return barra_menu_p
 
     # Coloca el menú desplegable de los tipos de filtros disponibles
-    # Hasta ahora el menú se despliega en 3 tipos de filtros
     def menu_filtros_desplegable(self, barra_menu_p):
-        desplegable = tk.Menu(barra_menu_p, tearoff=0)
-        # desplegable.add_command(label=self.ListaFiltros[2], command=self.fmosaico)
-        desplegable.add_command(label=self.ListaFiltros[1], command=self.ventana_brillo)
-        desplegable.add_command(label=self.ListaFiltros[2], command=self.ventana_mosaico)
-        barra_menu_p.add_cascade(label='Filtros', menu=desplegable)
+        filtros_deps = tk.Menu(barra_menu_p, tearoff=0)
+        
+        filtros_deps.add_command(label=self.filtros[0], command=self.ventana_mosaico_color)
+        filtros_deps.add_command(label=self.filtros[1], command=self.ventana_mosaico_gris)
+        filtros_deps.add_command(label=self.filtros[2], command=self.ventana_mosaico_simbolosBW)
+        filtros_deps.add_command(label=self.filtros[3], command=self.ventana_mosaico_simbolosC)
+        filtros_deps.add_command(label=self.filtros[4], command=self.ventana_mosaico_simbolos_BW_tonos)
+        filtros_deps.add_command(label=self.filtros[5], command=self.ventana_mosaico_texto)
+        filtros_deps.add_command(label=self.filtros[6], command=self.ventana_mosaico_domino_blanco)
+        filtros_deps.add_command(label=self.filtros[7], command=self.ventana_mosaico_domino_negro)
+        filtros_deps.add_command(label=self.filtros[8], command=self.ventana_mosaico_cartas)
+        barra_menu_p.add_cascade(label='Filtros', menu=filtros_deps)
 
         self.ventana.config(menu=barra_menu_p)
-        return desplegable
+        return filtros_deps
 
-    # Coloca el menú desplegable de los tipos de gris en la escala de grises
-    # El menu de escala de grises despliega 9 tipos de grises
-    def menu_desplegable_grises(self, menu_filtros_desplegable):
-        gris_desp = tk.Menu(menu_filtros_desplegable, tearoff=0)
-        gris_desp.add_command(label=self.grises[0], command=self.tipo_gris1)
-        gris_desp.add_command(label=self.grises[1], command=self.tipo_gris2)
-        gris_desp.add_command(label=self.grises[2], command=self.tipo_gris3)
-        gris_desp.add_command(label=self.grises[3], command=self.tipo_gris4)
-        gris_desp.add_command(label=self.grises[4], command=self.tipo_gris5)
-        gris_desp.add_command(label=self.grises[5], command=self.tipo_gris6)
-        gris_desp.add_command(label=self.grises[6], command=self.tipo_gris7)
-        gris_desp.add_command(label=self.grises[7], command=self.tipo_gris8)
-        gris_desp.add_command(label=self.grises[8], command=self.tipo_gris9)
-        menu_filtros_desplegable.add_cascade(label='Escala de Grises', menu=gris_desp)
 
-    # Leemos la entrada del brillo del usuario
-    def ventana_brillo(self):
-        v_brillo = tk.Toplevel()
-        v_brillo.geometry("200x150")
-        v_brillo.title("Cantidad de brillo por componente")
 
-        # Entrada para texto en blue
-        azul = tk.Label(v_brillo, text="Azul:")
-        azul.grid(pady=4, row=0, column=0)
-        intro_brillo_b = tk.IntVar()
-        cuadro_texto_b = tk.Entry(v_brillo, textvariable=intro_brillo_b)
-        cuadro_texto_b.place(x=50, y=5)
-
-        # Entrada para texto en green
-        verde = tk.Label(v_brillo, text="Verde:")
-        verde.grid(pady=4, row=1, column=0)
-        intro_brillo_g = tk.IntVar()
-        cuadro_texto_g = tk.Entry(v_brillo, textvariable=intro_brillo_g)
-        cuadro_texto_g.place(x=50, y=30)
-
-        # Entrada para texto en red
-        rojo = tk.Label(v_brillo, text="Rojo:")
-        rojo.grid(pady=4, row=2, column=0)
-        intro_brillo_r = tk.IntVar()
-        cuadro_texto_r = tk.Entry(v_brillo, textvariable=intro_brillo_r)
-        cuadro_texto_r.place(x=50, y=55)
-
-        # Botón para confirmar el brillo
-        b_listo = tk.Button(v_brillo, text="Listo",
-        command= lambda: self.fbrillo(intro_brillo_b.get(),intro_brillo_g.get(),intro_brillo_r.get()))
-        b_listo.grid(row=4, column=2)
-
-        v_brillo.mainloop()
-
-    # Leemos la entrada del pixelado del usuario
-    def ventana_mosaico(self):
+    def ventana_mosaico_color(self):
         v_mosaico = tk.Toplevel()
-        v_mosaico.geometry("200x120")
-        v_mosaico.title("Tamaño del pixelado")
+        v_mosaico.geometry("500x200")
+        v_mosaico.title("Datos")
+
+
+        guardado = tk.Label(v_mosaico, text="Guardar como:")
+        guardado.place(x=0, y=5)
+        intro_guardado = tk.StringVar()
+        text_guardado = tk.Entry(v_mosaico, textvariable=intro_guardado, width=30)
+        text_guardado.place(x=110, y=5)
+
+        font_size = tk.Label(v_mosaico, text="Tamaño letra (HTML):")
+        font_size.place(x=0, y=35)
+        intro_font_size = tk.StringVar()
+        text_font_size = tk.Entry(v_mosaico, textvariable=intro_font_size, width=20)
+        text_font_size.place(x=150, y=35)
 
         # Entrada para texto en eje X
         ejex = tk.Label(v_mosaico, text="Eje X:")
-        ejex.grid(pady=4, row=0, column=0)
+        ejex.place(x=0, y=65)
         intro_x = tk.IntVar()
         text_x = tk.Entry(v_mosaico, textvariable=intro_x)
-        text_x.place(x=50, y=5)
+        text_x.place(x=45, y=65)
 
         # Entrada para texto en eje Y
         ejey = tk.Label(v_mosaico, text="Eje Y:")
-        ejey.grid(pady=4, row=1, column=0)
+        ejey.place(x=0, y=95)
         intro_y = tk.IntVar()
         text_y = tk.Entry(v_mosaico, textvariable=intro_y)
-        text_y.place(x=50, y=30)
+        text_y.place(x=45, y=95)
 
         # Botón para confirmar el pixelado
         b_listo = tk.Button(v_mosaico, text="Listo",
-        command= lambda: self.fmosaico((intro_x.get(),intro_y.get())))
-        b_listo.grid(row=4, column=2)
+        command= lambda: self.fmosaico_color( (intro_x.get(),intro_y.get()), intro_guardado.get(), intro_font_size.get() ))
+        b_listo.place(x=110, y=125)
 
         v_mosaico.mainloop()
 
-    def ventana_img_original(self):
+
+    def ventana_mosaico_gris(self):
         v_mosaico = tk.Toplevel()
-        v_mosaico.geometry("250x100")
-        v_mosaico.title("Ruta | Nombre imagen")
+        v_mosaico.geometry("500x200")
+        v_mosaico.title("Datos")
+
+        guardado = tk.Label(v_mosaico, text="Guardar como:")
+        guardado.place(x=0, y=5)
+        intro_guardado = tk.StringVar()
+        text_guardado = tk.Entry(v_mosaico, textvariable=intro_guardado, width=30)
+        text_guardado.place(x=110, y=5)
+
+        font_size = tk.Label(v_mosaico, text="Tamaño letra (HTML):")
+        font_size.place(x=0, y=35)
+        intro_font_size = tk.StringVar()
+        text_font_size = tk.Entry(v_mosaico, textvariable=intro_font_size, width=20)
+        text_font_size.place(x=150, y=35)
 
         # Entrada para texto en eje X
-        ruta = tk.Label(v_mosaico, text="Ruta o Nombre:")
-        ruta.grid(pady=5, row=0, column=0)
-        self.intro_ruta = tk.StringVar()
-        text_ruta = tk.Entry(v_mosaico, textvariable=self.intro_ruta)
-        text_ruta.place(x=100, y=5)
+        ejex = tk.Label(v_mosaico, text="Eje X:")
+        ejex.place(x=0, y=65)
+        intro_x = tk.IntVar()
+        text_x = tk.Entry(v_mosaico, textvariable=intro_x)
+        text_x.place(x=45, y=65)
+
+        # Entrada para texto en eje Y
+        ejey = tk.Label(v_mosaico, text="Eje Y:")
+        ejey.place(x=0, y=95)
+        intro_y = tk.IntVar()
+        text_y = tk.Entry(v_mosaico, textvariable=intro_y)
+        text_y.place(x=45, y=95)
 
         # Botón para confirmar el pixelado
         b_listo = tk.Button(v_mosaico, text="Listo",
-        command= lambda: self.carga_imagen_original(self.intro_ruta.get()))
-        b_listo.grid(row=4, column=2)
+        command= lambda: self.fmosaico_gris( (intro_x.get(),intro_y.get()), intro_guardado.get(), intro_font_size.get() ))
+        b_listo.place(x=110, y=125)
+
+        v_mosaico.mainloop()
+
+
+    def ventana_mosaico_simbolosBW(self):
+        v_mosaico = tk.Toplevel()
+        v_mosaico.geometry("500x200")
+        v_mosaico.title("Datos")
+
+        guardado = tk.Label(v_mosaico, text="Guardar como:")
+        guardado.place(x=0, y=5)
+        intro_guardado = tk.StringVar()
+        text_guardado = tk.Entry(v_mosaico, textvariable=intro_guardado, width=30)
+        text_guardado.place(x=110, y=5)
+
+        font_size = tk.Label(v_mosaico, text="Tamaño letra (HTML):")
+        font_size.place(x=0, y=35)
+        intro_font_size = tk.StringVar()
+        text_font_size = tk.Entry(v_mosaico, textvariable=intro_font_size, width=20)
+        text_font_size.place(x=150, y=35)
+
+        # Entrada para texto en eje X
+        ejex = tk.Label(v_mosaico, text="Eje X:")
+        ejex.place(x=0, y=65)
+        intro_x = tk.IntVar()
+        text_x = tk.Entry(v_mosaico, textvariable=intro_x)
+        text_x.place(x=45, y=65)
+
+        # Entrada para texto en eje Y
+        ejey = tk.Label(v_mosaico, text="Eje Y:")
+        ejey.place(x=0, y=95)
+        intro_y = tk.IntVar()
+        text_y = tk.Entry(v_mosaico, textvariable=intro_y)
+        text_y.place(x=45, y=95)
+
+        # Botón para confirmar el pixelado
+        b_listo = tk.Button(v_mosaico, text="Listo",
+        command= lambda: self.fmosaico_simbolosBW( (intro_x.get(),intro_y.get()), intro_guardado.get(), intro_font_size.get() ))
+        b_listo.place(x=110, y=125)
+
+        v_mosaico.mainloop()
+
+
+    def ventana_mosaico_simbolosC(self):
+        v_mosaico = tk.Toplevel()
+        v_mosaico.geometry("500x200")
+        v_mosaico.title("Datos")
+
+        guardado = tk.Label(v_mosaico, text="Guardar como:")
+        guardado.place(x=0, y=5)
+        intro_guardado = tk.StringVar()
+        text_guardado = tk.Entry(v_mosaico, textvariable=intro_guardado, width=30)
+        text_guardado.place(x=110, y=5)
+
+        font_size = tk.Label(v_mosaico, text="Tamaño letra (HTML):")
+        font_size.place(x=0, y=35)
+        intro_font_size = tk.StringVar()
+        text_font_size = tk.Entry(v_mosaico, textvariable=intro_font_size, width=20)
+        text_font_size.place(x=150, y=35)
+
+        # Entrada para texto en eje X
+        ejex = tk.Label(v_mosaico, text="Eje X:")
+        ejex.place(x=0, y=65)
+        intro_x = tk.IntVar()
+        text_x = tk.Entry(v_mosaico, textvariable=intro_x)
+        text_x.place(x=45, y=65)
+
+        # Entrada para texto en eje Y
+        ejey = tk.Label(v_mosaico, text="Eje Y:")
+        ejey.place(x=0, y=95)
+        intro_y = tk.IntVar()
+        text_y = tk.Entry(v_mosaico, textvariable=intro_y)
+        text_y.place(x=45, y=95)
+
+        # Botón para confirmar el pixelado
+        b_listo = tk.Button(v_mosaico, text="Listo",
+        command= lambda: self.fmosaico_simbolosC( (intro_x.get(),intro_y.get()), intro_guardado.get(), intro_font_size.get() ))
+        b_listo.place(x=110, y=125)
+
+        v_mosaico.mainloop()
+
+
+
+    def ventana_mosaico_simbolos_BW_tonos(self):
+        v_mosaico = tk.Toplevel()
+        v_mosaico.geometry("500x200")
+        v_mosaico.title("Datos")
+
+        guardado = tk.Label(v_mosaico, text="Guardar como:")
+        guardado.place(x=0, y=5)
+        intro_guardado = tk.StringVar()
+        text_guardado = tk.Entry(v_mosaico, textvariable=intro_guardado, width=30)
+        text_guardado.place(x=110, y=5)
+
+        font_size = tk.Label(v_mosaico, text="Tamaño letra (HTML):")
+        font_size.place(x=0, y=35)
+        intro_font_size = tk.StringVar()
+        text_font_size = tk.Entry(v_mosaico, textvariable=intro_font_size, width=20)
+        text_font_size.place(x=150, y=35)
+
+        # Entrada para texto en eje X
+        ejex = tk.Label(v_mosaico, text="Eje X:")
+        ejex.place(x=0, y=65)
+        intro_x = tk.IntVar()
+        text_x = tk.Entry(v_mosaico, textvariable=intro_x)
+        text_x.place(x=45, y=65)
+
+        # Entrada para texto en eje Y
+        ejey = tk.Label(v_mosaico, text="Eje Y:")
+        ejey.place(x=0, y=95)
+        intro_y = tk.IntVar()
+        text_y = tk.Entry(v_mosaico, textvariable=intro_y)
+        text_y.place(x=45, y=95)
+
+        # Botón para confirmar el pixelado
+        b_listo = tk.Button(v_mosaico, text="Listo",
+        command= lambda: self.fmosaico_simbolos_BW_tonos( (intro_x.get(),intro_y.get()), intro_guardado.get(), intro_font_size.get() ))
+        b_listo.place(x=110, y=125)
+
+        v_mosaico.mainloop()
+
+
+
+    def ventana_mosaico_texto(self):
+        v_mosaico = tk.Toplevel()
+        v_mosaico.geometry("620x350")
+        v_mosaico.title("Datos")
+
+        guardado = tk.Label(v_mosaico, text="Guardar como:")
+        guardado.place(x=0, y=5)
+        intro_guardado = tk.StringVar()
+        text_guardado = tk.Entry(v_mosaico, textvariable=intro_guardado, width=30)
+        text_guardado.place(x=110, y=5)
+
+        font_size = tk.Label(v_mosaico, text="Tamaño letra (HTML):")
+        font_size.place(x=0, y=35)
+        intro_font_size = tk.StringVar()
+        text_font_size = tk.Entry(v_mosaico, textvariable=intro_font_size, width=20)
+        text_font_size.place(x=150, y=35)
+
+        # Entrada para texto en eje X
+        ejex = tk.Label(v_mosaico, text="Eje X:")
+        ejex.place(x=0, y=65)
+        intro_x = tk.IntVar()
+        text_x = tk.Entry(v_mosaico, textvariable=intro_x)
+        text_x.place(x=45, y=65)
+
+        # Entrada para texto en eje Y
+        ejey = tk.Label(v_mosaico, text="Eje Y:")
+        ejey.place(x=0, y=95)
+        intro_y = tk.IntVar()
+        text_y = tk.Entry(v_mosaico, textvariable=intro_y)
+        text_y.place(x=45, y=95)
+
+        texto_contenido = tk.Label(v_mosaico, text="Texto:")
+        texto_contenido.place(x=0, y=125)
+        intro_texto_contenido = tk.StringVar()
+        text_texto_contenido = tk.Entry(v_mosaico, textvariable=intro_texto_contenido, width=70)
+        text_texto_contenido.place(x=45, y=125, height=150)
+
+        # Botón para confirmar el pixelado
+        b_listo = tk.Button(v_mosaico, text="Listo",
+        command= lambda: self.fmosaico_texto( (intro_x.get(),intro_y.get()), intro_guardado.get(), intro_font_size.get(), intro_texto_contenido.get() ))
+        b_listo.place(x=225, y=300)
+
+        v_mosaico.mainloop()
+
+
+
+    def ventana_mosaico_cartas(self):
+        v_mosaico = tk.Toplevel()
+        v_mosaico.geometry("500x200")
+        v_mosaico.title("Datos")
+
+        guardado = tk.Label(v_mosaico, text="Guardar como:")
+        guardado.place(x=0, y=5)
+        intro_guardado = tk.StringVar()
+        text_guardado = tk.Entry(v_mosaico, textvariable=intro_guardado, width=30)
+        text_guardado.place(x=110, y=5)
+
+        # Entrada para texto en eje X
+        ejex = tk.Label(v_mosaico, text="Eje X:")
+        ejex.place(x=0, y=35)
+        intro_x = tk.IntVar()
+        text_x = tk.Entry(v_mosaico, textvariable=intro_x)
+        text_x.place(x=45, y=35)
+
+        # Entrada para texto en eje Y
+        ejey = tk.Label(v_mosaico, text="Eje Y:")
+        ejey.place(x=0, y=65)
+        intro_y = tk.IntVar()
+        text_y = tk.Entry(v_mosaico, textvariable=intro_y)
+        text_y.place(x=45, y=65)
+
+        # Botón para confirmar el pixelado
+        b_listo = tk.Button(v_mosaico, text="Listo",
+        command= lambda: self.fcartas( (intro_x.get(),intro_y.get()), intro_guardado.get() ))
+        b_listo.place(x=110, y=100)
+
+        v_mosaico.mainloop()
+
+
+
+    def ventana_mosaico_domino_blanco(self):
+        v_mosaico = tk.Toplevel()
+        v_mosaico.geometry("500x200")
+        v_mosaico.title("Datos")
+
+        guardado = tk.Label(v_mosaico, text="Guardar como:")
+        guardado.place(x=0, y=5)
+        intro_guardado = tk.StringVar()
+        text_guardado = tk.Entry(v_mosaico, textvariable=intro_guardado, width=30)
+        text_guardado.place(x=110, y=5)
+
+        # Entrada para texto en eje X
+        ejex = tk.Label(v_mosaico, text="Eje X:")
+        ejex.place(x=0, y=35)
+        intro_x = tk.IntVar()
+        text_x = tk.Entry(v_mosaico, textvariable=intro_x)
+        text_x.place(x=45, y=35)
+
+        # Entrada para texto en eje Y
+        ejey = tk.Label(v_mosaico, text="Eje Y:")
+        ejey.place(x=0, y=65)
+        intro_y = tk.IntVar()
+        text_y = tk.Entry(v_mosaico, textvariable=intro_y)
+        text_y.place(x=45, y=65)
+
+        # Botón para confirmar el pixelado
+        b_listo = tk.Button(v_mosaico, text="Listo",
+        command= lambda: self.fdomino_blanco( (intro_x.get(),intro_y.get()), intro_guardado.get() ))
+        b_listo.place(x=110, y=100)
+
+        v_mosaico.mainloop()
+
+
+
+    def ventana_mosaico_domino_negro(self):
+        v_mosaico = tk.Toplevel()
+        v_mosaico.geometry("500x200")
+        v_mosaico.title("Datos")
+
+        guardado = tk.Label(v_mosaico, text="Guardar como:")
+        guardado.place(x=0, y=5)
+        intro_guardado = tk.StringVar()
+        text_guardado = tk.Entry(v_mosaico, textvariable=intro_guardado, width=30)
+        text_guardado.place(x=110, y=5)
+
+        # Entrada para texto en eje X
+        ejex = tk.Label(v_mosaico, text="Eje X:")
+        ejex.place(x=0, y=35)
+        intro_x = tk.IntVar()
+        text_x = tk.Entry(v_mosaico, textvariable=intro_x)
+        text_x.place(x=45, y=35)
+
+        # Entrada para texto en eje Y
+        ejey = tk.Label(v_mosaico, text="Eje Y:")
+        ejey.place(x=0, y=65)
+        intro_y = tk.IntVar()
+        text_y = tk.Entry(v_mosaico, textvariable=intro_y)
+        text_y.place(x=45, y=65)
+
+        # Botón para confirmar el pixelado
+        b_listo = tk.Button(v_mosaico, text="Listo",
+        command= lambda: self.fdomino_negro( (intro_x.get(),intro_y.get()), intro_guardado.get() ))
+        b_listo.place(x=110, y=100)
+
+        v_mosaico.mainloop()
+
+
+
+
+    def ventana_img_original(self):
+        v_igm_orig = tk.Toplevel()
+        v_igm_orig.geometry("450x100")
+        v_igm_orig.title("Ruta | Nombre imagen")
+
+        # Entrada para texto en eje X
+        ruta = tk.Label(v_igm_orig, text="Ruta o Nombre:")
+        ruta.grid(pady=5, row=0, column=0)
+        self.intro_ruta = tk.StringVar()
+        text_ruta = tk.Entry(v_igm_orig, textvariable=self.intro_ruta, width=40)
+        text_ruta.place(x=110, y=5)
+
+        # Botón para confirmar el pixelado
+        b_listo = tk.Button(v_igm_orig, text="Listo",
+        command= lambda: self.carga_imagen_original(self.intro_ruta.get()), width=10)
+        b_listo.place(x=110, y=50)
+
 
     # Se encarga de mantener la ventana abierta
     def main_lp(self):
