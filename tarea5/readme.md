@@ -11,29 +11,29 @@ La ejecución del programa se explica al final del archivo
 Instalación de dependencias:
 
 ###Instalar Python:
-	```sh
-	sudo apt install python3
-	```
+```sh
+sudo apt install python3
+```
 
 ###si no funciona, usar:
-	```sh
-	sudo apt-get install python3
-	```
+```sh
+sudo apt-get install python3
+```
 
 ###Instalar Tkinter:
-	```sh
-	sudo apt install python-tk
-	```
+```sh
+sudo apt install python-tk
+```
 
 ###Instalar PIP:
-	```sh
-	sudo apt install python-pip
-	```
+```sh
+sudo apt install python-pip
+```
 
 ###si no funciona, usar:
-	```sh
-	sudo apt install python-pip3
-	```
+```sh
+sudo apt install python-pip3
+```
 
 
 --- Para las instalaciones que requieren el uso de pip usar "pip" o si no lo instala
@@ -41,47 +41,47 @@ Instalación de dependencias:
 
 
 ###Instalar Pillow:
-	```sh
-	sudo pip install pillow
-	```
+```sh
+sudo pip install pillow
+```
 
 ###si no funciona, usar:
-	```sh
-	pip install PIL
-	```	
+```sh
+pip install PIL
+```	
 	
 ###Instalar tqdm para la barra de progreso:
-	```sh
-	pip install tqdm
-	```
+```sh
+pip install tqdm
+```
 	
 ###si no funciona, usar: 
- 	```sh
- 	pip3 install tqdm
- 	```
+```sh
+pip3 install tqdm
+```
 
 
 ###Instalar OpenCV para la biblioteca cv2:
-	```sh
-	sudo apt-get install libopencv-dev
-	sudo apt-get install python-opencv
-	```
+```sh
+sudo apt-get install libopencv-dev
+sudo apt-get install python-opencv
+```
 
 
 ###Si no funciona, usar:
-	```sh
-	sudo apt-get install libopencv-dev python-opencv
-	```
+```sh
+sudo apt-get install libopencv-dev python-opencv
+```
 
 ###Instalar Numpy:
-	```sh
-	sudo pip install numpy
-	```
+```sh
+sudo pip install numpy
+```
 
 ###Instalar Pyinstaller:
-	```sh
-	sudo pip install pyinstaller
-	```
+```sh
+sudo pip install pyinstaller
+```
 
 
 -------------- Ejecución del programa -----------------
