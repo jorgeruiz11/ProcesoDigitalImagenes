@@ -83,7 +83,7 @@ class ManejadorImagen(object):
         if not os.path.exists(f'{self.nombreImg}_imagesBW'):
             os.mkdir(f'{self.nombreImg}_imagesBW')
 
-        # Crearemos solamente 30 imagenes, es decir, 30 tonos.
+        # Porcentaje.
         j = 1
         porcentaje = tqdm(total=30, position=0, leave=False)
 
@@ -111,11 +111,12 @@ class ManejadorImagen(object):
 
             gris_tonos.append(grisProm / c)
 
-            # porcentaje = int(j * 100 / 30)
-            # print(f'{j}/{30} | {porcentaje}%', end='\r')
+
+            #  Mostrando porcentaje en terminal
             porcentaje.set_description('Procesando...'.format(j))
             j += 1
             porcentaje.update(1)
+
 
             if not os.path.exists(f'{self.nombreImg}_imagesBW/{self.nombreImg}_{i}_.jpg'):
                 self.Pimagen.save(f'{self.nombreImg}_imagesBW/{self.nombreImg}_{i}.jpg')
@@ -134,8 +135,6 @@ class ManejadorImagen(object):
         l_coords = self.calcula_regiones(self.Pimagen.size, (size[0],size[1]))
         imgInCoord = []
 
-        total = len(l_coords)
-
         for (xIzq, yIzq, xDer, yDer) in l_coords:
             g_prom = 0
             c = 1
@@ -147,7 +146,7 @@ class ManejadorImagen(object):
                     c += 1
 
             g_prom /= c
-            tonoCernano = gris_tonos.index(min(gris_tonos, key=lambda im:abs(im-g_prom)))
+            tonoCernano = gris_tonos.index(min(gris_tonos, key=lambda im:abs(im - g_prom)))
             imgInCoord.append(tonoCernano)
 
             if xDer >= self.ancho -1:
@@ -177,12 +176,13 @@ class ManejadorImagen(object):
         return ImgMadeOfImgs
 
 
+
     def gen_color_images(self, size):
         rgbImg = Image.fromarray(self.imagen)
         modImg = self.Pimagen.load()
 
         l_coords = self.calcula_regiones(self.Pimagen.size, (size[0],size[1]))
-        total = len(l_coords)
+        total_i = len(l_coords)
 
         posX = 0
         posY = 0
@@ -192,8 +192,10 @@ class ManejadorImagen(object):
         ImgMadeOfImgs = Image.new('RGB', (nuevoAncho, nuevoAlto), (255, 255, 255, 255))
         imgToPixel = self.Pimagen.load()
 
+        # Porcentaje
         img_i = 1
-        porcentaje = tqdm(total=30, position=0, leave=False)
+        porcentaje = tqdm(total=total_i, position=0, leave=False)
+
 
         for (xIzq, yIzq, xDer, yDer) in l_coords:
             rProm = 0
@@ -222,10 +224,8 @@ class ManejadorImagen(object):
             ImgMadeOfImgs.paste(pixelResize, (posX, posY))
 
 
-
-            # porcentaje = int(img_i * 100 / total)
-            # print(f'{img_i}/{total} | {porcentaje}%', end='\r')
-            porcentaje.set_description('Procesando...'.format(j))
+            # Mostrando porcentaje en terminal
+            porcentaje.set_description('Procesando...'.format(img_i))
             img_i += 1
             porcentaje.update(1)
 
@@ -239,7 +239,7 @@ class ManejadorImagen(object):
         return ImgMadeOfImgs
 
 
-    # con este nombre crearemos el directorio y los titulos de las
+    # Con este nombre crearemos el directorio y los titulos de las
     # imagenes en BW
     def getNombre(self, ruta_imagen):
         nameOut = ""
@@ -251,10 +251,3 @@ class ManejadorImagen(object):
             nameOut = ruta_imagen.replace('.png', "")
 
         return nameOut
-
-
-
-# if __name__ == '__main__':
-#     m = ManejadorImagen('back.jpeg')
-#     # m.gen_gray_images((10,10))
-#     m.gen_color_images((20,20))
