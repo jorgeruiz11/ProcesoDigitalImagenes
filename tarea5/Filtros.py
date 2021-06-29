@@ -82,7 +82,7 @@ class Filtros(object):
         barra_menu_p.add_command(label=self.ListaFiltros[1], command=self.ventana_R_C)
         barra_menu_p.add_command(label='Guardar Imagen', command=self.ventana_guardar)
 
-        tk.Label(None, text="El filtro de recursivas a color puede tomar mucho tiempo si el pixelado es menor a 30x30 (al rededor de 5 minutos)", fg="black").pack()
+        tk.Label(None, text="El filtro de recursivas a color puede tomar mucho tiempo si el pixelado es menor a 30x30 (al rededor de 4 minutos)", fg="black").pack()
         tk.Label(None, text="El tamaño de las imagenes es de 500x400", fg="firebrick").pack()
 
         self.ventana.config(menu=barra_menu_p)
